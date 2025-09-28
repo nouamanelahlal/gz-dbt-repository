@@ -6,7 +6,61 @@ sources:
     tables:
       - name: product
         identifier: raw_gz_product
+        description: information about products that contain purchase_price
+        columns:
+          - name: products_id
+            description: id of each product
+            tests:
+             - unique
+             - not_null
+          - name: purchase_price
+            description: price of each purchase
       - name: sales
         identifier: raw_gz_sales
+        description: sales of Greenweez / we have on row per product_id found in each orders_id
+        columns:
+          - name: date_date_ts
+            description: date of purchase
+          - name: orders_id 
+            description: id of each order
+          - name: products_id
+            description: id of each product
+          - name: revenue
+            description: revenue of each product
+          - name: quantity
+            description: quantity of each product ordered
       - name: ship
         identifier: raw_gz_ship
+        description: information about orders that contain shipping details
+        columns:
+          - name: orders_id
+            description: id of each order
+            tests:
+               - unique
+               - not_null
+          - name: shipping_fee
+            description: fees related to shipping orders
+          - name: logcost
+            description: transport cost related to shipping
+          - name: ship_cost
+            description: cost related to shipping
+models:
+  - name: stg_raw_sales
+    description: "Staging model for sales with a surrogate primary key."
+    columns:
+      - name: sales_pk
+        description: "Surrogate PK combining orders_id and products_id."
+        tests:
+          - unique
+          - not_null
+      - name: date_date
+        description: "Date of purchase."
+      - name: orders_id
+        description: "Order ID from raw source."
+      - name: products_id
+        description: "Product ID from raw source."
+      - name: revenue
+        description: "Revenue of the product in this order."
+      - name: quantity
+        description: "Quantity purchased."
+
