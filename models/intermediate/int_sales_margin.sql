@@ -3,8 +3,9 @@ with joined as (
         s.*,
         p.purchase_price,
         ROUND((s.quantity * p.purchase_price), 2) AS  purchase_cost 
-    from `sharp-effort-470110-s7.dbt_nouamane.stg_raw__sales` s
-    join `sharp-effort-470110-s7.dbt_nouamane.stg_raw__product` p
+FROM  {{ ref('stg_raw__sales') }} AS s
+INNER JOIN {{ ref('stg_raw__product') }} AS p
+
     using (products_id)
 )
 
